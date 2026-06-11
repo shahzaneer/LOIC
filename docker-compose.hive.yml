@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  loic:
+    extends:
+      file: docker-compose.yml
+      service: loic
+    command:
+      - "--hivemind"
+      - "--irc-server=${IRC_SERVER:-irc-server}"
+      - "--irc-port=${IRC_PORT:-6667}"
+      - "--irc-channel=${IRC_CHANNEL:-#loic}"
+      - "--quiet"
+    deploy:
+      replicas: ${REPLICAS:-10}
+    restart: always
+
+  irc-server:
+    image: inspircd/inspircd-docker:latest
+    ports:
+      - "6667:6667"
+      - "6697:6697"
+    volumes:
+      - irc-data:/data
+    restart: unless-stopped
+
+volumes:
+  irc-data:

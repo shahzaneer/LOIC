@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  loic:
+    build: .
+    image: loic:v2
+    network_mode: host
+    restart: "no"
+    # Default: show help
+    # Override with `command:` or `docker compose run`
+    command: ["--help"]
+
+# ── Usage ─────────────────────────────────────
+#
+#   docker compose run --rm loic --target-ip 10.0.0.1 --method http --threads 500
+#
+#   docker compose up --scale loic=10 -d
+#     (requires overriding command in a separate file or env var)
+#
+#   docker compose -f docker-compose.yml -f docker-compose.hive.yml up -d
+#     (starts in HiveMind mode)
+#
+# For multi-instance scaling, use:
+#   docker compose -f docker-compose.fleet.yml up --scale loic=20 -d

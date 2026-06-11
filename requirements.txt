@@ -1,0 +1,13 @@
+# Core (no external dependencies - uses only stdlib asyncio)
+# Install with: pip install -e .
+
+# Optional: IRC HiveMind support
+# pip install "loic[irc]"
+irc>=20.0
+
+# Optional: ICMP flood support
+# pip install "loic[icmp]"
+scapy>=2.5
+
+# Or install everything:
+# pip install "loic[all]"

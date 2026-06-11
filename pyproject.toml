@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "loic"
+version = "2.0.0"
+description = "Low Orbit Ion Cannon - Python Edition"
+readme = "README.md"
+license = {text = "Public Domain"}
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+irc = ["irc>=20.0"]
+icmp = ["scapy>=2.5"]
+all = ["irc>=20.0", "scapy>=2.5"]
+dev = ["pytest>=7.0", "pytest-asyncio>=0.21"]
+
+[project.scripts]
+loic = "loic.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["loic*"]

